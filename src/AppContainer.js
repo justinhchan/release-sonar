@@ -8,21 +8,44 @@ import {
 } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 
+const COLORS = {
+  SPOTIFY_BLACK: "#191414",
+  SPOTIFY_GREEN: "#1DB954",
+  SPOTIFY_WHITE: "#FFFFFF",
+};
+
 const theme = createMuiTheme({
   palette: {
     type: "dark",
     background: {
-      default: "#191414",
+      default: COLORS.SPOTIFY_BLACK,
     },
     primary: {
-      main: "#1DB954",
+      main: COLORS.SPOTIFY_GREEN,
     },
   },
   overrides: {
     MuiButton: {
       containedPrimary: {
-        color: "white",
+        color: COLORS.SPOTIFY_WHITE,
         borderRadius: "50vw",
+      },
+    },
+    MuiLink: {
+      underlineHover: {
+        "&:hover": {
+          color: COLORS.SPOTIFY_GREEN,
+        },
+      },
+    },
+    MuiPaper: {
+      root: {
+        backgroundColor: "transparent",
+      },
+    },
+    MuiDialog: {
+      paper: {
+        backgroundColor: COLORS.SPOTIFY_BLACK,
       },
     },
   },

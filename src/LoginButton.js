@@ -2,17 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import Alert from "@material-ui/lab/Alert";
+
 import { AUTHORIZATION } from "./utils";
 
 const LoginButton = ({ href, isError, notice, text }) => (
   <Box display="flex" flexDirection="column" alignItems="center">
-    {notice && (
-      <Typography color={isError ? "error" : "initial"} variant="overline">
-        {notice}
-      </Typography>
-    )}
-    <Box mt={1}>
+    {notice && <Alert severity={isError ? "error" : "info"}>{notice}</Alert>}
+    <Box mt={2}>
       <Button color="primary" variant="contained" href={href}>
         {text}
       </Button>

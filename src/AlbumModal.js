@@ -1,9 +1,11 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, forwardRef, Fragment } from "react";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 import { getAlbumInfo } from "./services";
 import { getFormattedDate } from "./utils";
 import TrackList from "./TrackList";
 import AlbumTypeIcon from "./AlbumTypeIcon";
+import Artists from "./Artists";
 
 import Box from "@material-ui/core/Box";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -13,38 +15,48 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Link from "@material-ui/core/Link";
+import Slide from "@material-ui/core/Slide";
 import Typography from "@material-ui/core/Typography";
 
-const Artists = ({ artistObjects }) => (
-  <Box>
-    By&nbsp;
-    <Fragment>
-      {artistObjects.map((artist, index) => (
-        <Fragment key={artist.name}>
-          <Link
-            href={artist.external_urls.spotify}
-            color="inherit"
-            variant="subtitle1"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {artist.name}
-          </Link>
-          <span>{index < artistObjects.length - 1 ? ", " : ""}</span>
-        </Fragment>
-      ))}
-    </Fragment>
-  </Box>
-);
+const useStyles = makeStyles((theme) => ({
+  albumInfo: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.only("xs")]: {
+      flexDirection: "column",
+    },
+    [theme.breakpoints.up("sm")]: {
+      // justifyContent: "center",
+    },
+  },
+  albumArt: {
+    minHeight: "150px",
+    minWidth: "150px",
+    maxHeight: "300px",
+    maxWidth: "300px",
+    [theme.breakpoints.only("xs")]: {
+      marginBottom: theme.spacing(2),
+    },
+    [theme.breakpoints.up("sm")]: {
+      marginRight: theme.spacing(2),
+    },
+  },
+  buttonBase: {
+    width: "100%",
+    height: "100%",
+  },
+}));
 
-Artists.propTypes = {
-  artistObjects: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
+const Transition = forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 
 const AlbumModal = ({ albumId, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [album, setAlbum] = useState(null);
   const isLoading = !album;
+  const classes = useStyles();
 
   const loadAlbum = () => {
     getAlbumInfo(albumId)
@@ -65,21 +77,25 @@ const AlbumModal = ({ albumId, children }) => {
 
   return (
     <Fragment>
-      <ButtonBase
-        style={{ width: "100%", height: "100%" }}
-        onClick={handleClickOpen}
-      >
+      <ButtonBase className={classes.buttonBase} onClick={handleClickOpen}>
         {children}
       </ButtonBase>
-      <Dialog fullWidth maxWidth="sm" open={isOpen} onClose={handleClose}>
+      <Dialog
+        fullWidth
+        TransitionComponent={Transition}
+        disableRestoreFocus
+        maxWidth="md"
+        open={isOpen}
+        onClose={handleClose}
+      >
         {isLoading ? (
           <LinearProgress />
         ) : (
           <Fragment>
             <DialogContent>
               <Box display="flex" flexDirection="column">
-                <Box display="flex" mb={1}>
-                  <Box width="50%" height="50%" mr={2}>
+                <Box className={classes.albumInfo}>
+                  <Box className={classes.albumArt}>
                     <img
                       src={album.images[0].url}
                       alt={album.name}
@@ -94,13 +110,15 @@ const AlbumModal = ({ albumId, children }) => {
                       color="inherit"
                       target="_blank"
                       rel="noreferrer"
+                      gutterBottom
                     >
                       {album.name}
                     </Link>
                     <Artists artistObjects={album.artists} />
                     <Typography variant="caption">
                       {getFormattedDate(album.release_date)} ·{" "}
-                      {album.tracks.total} songs
+                      {album.tracks.total}{" "}
+                      {album.tracks.total > 1 ? "songs" : "song"}
                     </Typography>
                     <Box mt={1}>
                       <AlbumTypeIcon type={album.album_type} showText />
@@ -111,7 +129,7 @@ const AlbumModal = ({ albumId, children }) => {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} color="inherit">
                 Close
               </Button>
             </DialogActions>

@@ -11,9 +11,9 @@ import AlbumModal from "./AlbumModal";
 import LoginButton from "./LoginButton";
 
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import Link from "@material-ui/core/Link";
 
 const GROUP_SIZE = 20;
 
@@ -36,13 +36,8 @@ const AlbumGrid = () => {
         setCurrentAlbums(sortedAlbums.slice(0, GROUP_SIZE));
         setNextIndex(GROUP_SIZE);
       })
-      .catch((err) => {
-        let message = err.message;
-        if (err.response) {
-          const { error } = JSON.parse(err.response);
-          message = error.message;
-        }
-        setErrorMessage(message);
+      .catch(() => {
+        setErrorMessage("An error occured when getting the albums.");
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -66,7 +61,7 @@ const AlbumGrid = () => {
             {currentAlbums.map((album) => (
               <Fragment key={album.id}>
                 {ALBUM_GROUP_TYPES.includes(album.album_type) && (
-                  <Grid item xs={6} md={3}>
+                  <Grid item xs={6} sm={4} md={3}>
                     <AlbumModal albumId={album.id}>
                       <AlbumCard album={album} />
                     </AlbumModal>
@@ -76,16 +71,10 @@ const AlbumGrid = () => {
             ))}
           </Grid>
           {nextIndex !== 0 && (
-            <Box my={2} textAlign="center">
-              <Link
-                component="button"
-                variant="button"
-                gutterBottom
-                color="inherit"
-                onClick={() => handleClickShowMore()}
-              >
+            <Box my={4} textAlign="center">
+              <Button variant="outlined" onClick={() => handleClickShowMore()}>
                 Show More
-              </Link>
+              </Button>
             </Box>
           )}
         </Box>
