@@ -6,6 +6,7 @@ import { getFormattedDate } from "./utils";
 import TrackList from "./TrackList";
 import AlbumTypeIcon from "./AlbumTypeIcon";
 import Artists from "./Artists";
+import LoginButton from "./LoginButton";
 
 import Box from "@material-ui/core/Box";
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -25,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     [theme.breakpoints.only("xs")]: {
       flexDirection: "column",
-    },
-    [theme.breakpoints.up("sm")]: {
-      // justifyContent: "center",
     },
   },
   albumArt: {
@@ -54,14 +52,20 @@ const Transition = forwardRef((props, ref) => (
 
 const AlbumModal = ({ albumId, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [album, setAlbum] = useState(null);
-  const isLoading = !album;
+  const [errorMessage, setErrorMessage] = useState("");
   const classes = useStyles();
 
   const loadAlbum = () => {
     getAlbumInfo(albumId)
       .then((response) => setAlbum(response))
-      .catch((err) => console.log("catch", err));
+      .catch(() =>
+        setErrorMessage(
+          "An error occured when gathering information for the album."
+        )
+      )
+      .then(() => setIsLoading(false));
   };
 
   const handleClickOpen = () => {
@@ -88,53 +92,56 @@ const AlbumModal = ({ albumId, children }) => {
         open={isOpen}
         onClose={handleClose}
       >
-        {isLoading ? (
-          <LinearProgress />
-        ) : (
-          <Fragment>
-            <DialogContent>
-              <Box display="flex" flexDirection="column">
-                <Box className={classes.albumInfo}>
-                  <Box className={classes.albumArt}>
-                    <img
-                      src={album.images[0].url}
-                      alt={album.name}
-                      width="100%"
-                      height="100%"
-                    />
-                  </Box>
-                  <Box display="flex" flexDirection="column">
-                    <Link
-                      variant="h6"
-                      href={album.external_urls.spotify}
-                      color="inherit"
-                      target="_blank"
-                      rel="noreferrer"
-                      gutterBottom
-                    >
-                      {album.name}
-                    </Link>
-                    <Artists artistObjects={album.artists} />
-                    <Typography variant="caption">
-                      {getFormattedDate(album.release_date)} ·{" "}
-                      {album.tracks.total}{" "}
-                      {album.tracks.total > 1 ? "songs" : "song"}
-                    </Typography>
-                    <Box mt={1}>
-                      <AlbumTypeIcon type={album.album_type} showText />
+        <DialogContent>
+          {isLoading ? (
+            <LinearProgress />
+          ) : (
+            <Fragment>
+              {errorMessage && <LoginButton isError notice={errorMessage} />}
+              {!errorMessage && (
+                <Box display="flex" flexDirection="column">
+                  <Box className={classes.albumInfo}>
+                    <Box className={classes.albumArt}>
+                      <img
+                        src={album.images[0].url}
+                        alt={album.name}
+                        width="100%"
+                        height="100%"
+                      />
+                    </Box>
+                    <Box display="flex" flexDirection="column">
+                      <Link
+                        variant="h6"
+                        href={album.external_urls.spotify}
+                        color="inherit"
+                        target="_blank"
+                        rel="noreferrer"
+                        gutterBottom
+                      >
+                        {album.name}
+                      </Link>
+                      <Artists artistObjects={album.artists} />
+                      <Typography variant="caption">
+                        {getFormattedDate(album.release_date)} ·{" "}
+                        {album.tracks.total}{" "}
+                        {album.tracks.total > 1 ? "songs" : "song"}
+                      </Typography>
+                      <Box mt={1}>
+                        <AlbumTypeIcon type={album.album_type} showText />
+                      </Box>
                     </Box>
                   </Box>
+                  <TrackList tracksObject={album.tracks} />
                 </Box>
-                <TrackList tracksObject={album.tracks} />
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose} color="inherit">
-                Close
-              </Button>
-            </DialogActions>
-          </Fragment>
-        )}
+              )}
+            </Fragment>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="inherit">
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </Fragment>
   );

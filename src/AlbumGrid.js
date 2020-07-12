@@ -36,9 +36,7 @@ const AlbumGrid = () => {
         setCurrentAlbums(sortedAlbums.slice(0, GROUP_SIZE));
         setNextIndex(GROUP_SIZE);
       })
-      .catch(() => {
-        setErrorMessage("An error occured when getting the albums.");
-      })
+      .catch(() => setErrorMessage("An error occured when getting the albums."))
       .finally(() => setIsLoading(false));
   }, []);
 
