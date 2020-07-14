@@ -6,7 +6,9 @@ import {
   Box,
   Container,
 } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import { ThemeProvider } from "@material-ui/styles";
+import GitHubIcon from "@material-ui/icons/GitHub";
 
 const COLORS = {
   SPOTIFY_BLACK: "#191414",
@@ -51,26 +53,56 @@ const theme = createMuiTheme({
   },
 });
 
-const AppContainer = ({ children }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container fixed>
-        <Box my={2} textAlign="center">
-          <Link
-            variant="h2"
-            gutterBottom
-            href="/"
-            underline="none"
-            color="inherit"
-          >
-            Release Sonar
-          </Link>
+const Copyright = () => (
+  <Typography variant="body2" color="textSecondary" align="center">
+    {"Copyright © "}
+    <Link color="inherit" href="https://releasesonar.com">
+      Release Sonar
+    </Link>{" "}
+    {new Date().getFullYear()}
+    {"."}
+  </Typography>
+);
+
+const AppContainer = ({ children }) => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Container fixed>
+      <Box my={2} textAlign="center">
+        <Link
+          variant="h2"
+          href="/"
+          underline="none"
+          color="inherit"
+          gutterBottom
+        >
+          Release Sonar
+        </Link>
+      </Box>
+      <Box justifyContent="center">{children}</Box>
+      <footer>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          mt={6}
+          mb={2}
+        >
+          <Box mb={1}>
+            <Link
+              color="inherit"
+              href="https://github.com/justinhchan/release-sonar"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <GitHubIcon />
+            </Link>
+          </Box>
+          <Copyright />
         </Box>
-        <Box justifyContent="center">{children}</Box>
-      </Container>
-    </ThemeProvider>
-  );
-};
+      </footer>
+    </Container>
+  </ThemeProvider>
+);
 
 export default AppContainer;
