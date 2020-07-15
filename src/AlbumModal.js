@@ -52,10 +52,10 @@ const Transition = forwardRef((props, ref) => (
 
 const AlbumModal = ({ albumId, children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [album, setAlbum] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const classes = useStyles();
+  const loaded = album || errorMessage;
 
   const loadAlbum = () => {
     getAlbumInfo(albumId)
@@ -64,15 +64,14 @@ const AlbumModal = ({ albumId, children }) => {
         setErrorMessage(
           "An error occured when gathering information for the album."
         )
-      )
-      .then(() => setIsLoading(false));
+      );
   };
 
   const handleClickOpen = () => {
-    setIsOpen(true);
     if (!album) {
       loadAlbum();
     }
+    setIsOpen(true);
   };
 
   const handleClose = () => {
@@ -93,12 +92,13 @@ const AlbumModal = ({ albumId, children }) => {
         onClose={handleClose}
       >
         <DialogContent>
-          {isLoading ? (
+          {!loaded ? (
             <LinearProgress />
           ) : (
             <Fragment>
-              {errorMessage && <LoginButton isError notice={errorMessage} />}
-              {!errorMessage && (
+              {errorMessage ? (
+                <LoginButton isError notice={errorMessage} />
+              ) : (
                 <Box display="flex" flexDirection="column">
                   <Box className={classes.albumInfo}>
                     <Box className={classes.albumArt}>

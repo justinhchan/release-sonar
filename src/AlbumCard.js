@@ -7,7 +7,22 @@ import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import Skeleton from "@material-ui/lab/Skeleton";
 import Typography from "@material-ui/core/Typography";
+
+export const AlbumCardSkeleton = () => (
+  <Box display="flex" flexDirection="column" alignItems="center">
+    <Skeleton style={{ width: "100%", paddingBottom: "100%" }} variant="rect" />
+    <Box mt={2} mb={1} width="75%">
+      <Skeleton variant="text" />
+    </Box>
+    <Skeleton variant="text" width="50%" />
+    <Box mt={2} mb={1} width="25%">
+      <Skeleton variant="text" />
+    </Box>
+    <Skeleton variant="circle" width={24} height={24} />
+  </Box>
+);
 
 const AlbumCard = ({ album }) => {
   const {
