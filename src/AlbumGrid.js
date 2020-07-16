@@ -77,7 +77,7 @@ const AlbumGrid = () => {
           </Grid>
           {showShowMoreButton && (
             <Box my={4} textAlign="center">
-              <Button variant="outlined" onClick={() => handleClickShowMore()}>
+              <Button variant="contained" onClick={() => handleClickShowMore()}>
                 Show More
               </Button>
             </Box>
