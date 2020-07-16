@@ -1,7 +1,7 @@
 // Authorization
 const endpoint = "https://accounts.spotify.com/authorize";
 const clientId = "6abf22ae9b974482aafcb22ee4884dc5";
-const redirectUri = "http://localhost:3000";
+const redirectUri = window.location.href;
 const scopes = ["user-follow-read", "user-read-private"];
 const authorizationURI = `${endpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
   "%20"

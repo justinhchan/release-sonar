@@ -22,3 +22,4 @@ Builds the app for production to the `build` folder.<br />
 - [Spotify Web API](https://github.com/JMPerez/spotify-web-api-js)
 - [query-string](https://github.com/sindresorhus/query-string#readme)
 - [react virtualized](https://github.com/bvaughn/react-virtualized#readme)
+- [Firebase](https://firebase.google.com/)
