@@ -56,7 +56,7 @@ const theme = createMuiTheme({
 const Copyright = () => (
   <Typography variant="body2" color="textSecondary" align="center">
     {"Copyright © "}
-    <Link color="inherit" href="https://releasesonar.com">
+    <Link color="inherit" href="https://release-sonar.web.app/">
       Release Sonar
     </Link>{" "}
     {new Date().getFullYear()}
