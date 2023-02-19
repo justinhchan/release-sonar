@@ -45,8 +45,8 @@ const AppTabs = () => {
 
   return (
     <>
-      <AppBar position="static">
-        <Tabs value={value} onChange={handleChangeTab}>
+      <AppBar position="static" color="default">
+        <Tabs value={value} onChange={handleChangeTab} indicatorColor="primary">
           <Tab label="Artists You Follow" />
           <Tab label="All Releases" disabled={shouldDisableReleasesTab} />
         </Tabs>
