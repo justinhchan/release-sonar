@@ -5,7 +5,7 @@ import LoginButton from "./LoginButton";
 import Box from "@material-ui/core/Box";
 import { initializeSpotify } from "./services.js";
 import { getTokenFromCookie, setTokenCookie } from "./utils";
-import AlbumGrid from "./AlbumGrid.js";
+import AppTabs from "./AppTabs.js";
 
 const App = () => {
   const [initialized, setInitialized] = useState(false);
@@ -28,7 +28,7 @@ const App = () => {
 
   return (
     <Container>
-      <Box mx="auto">{initialized ? <AlbumGrid /> : <LoginButton />}</Box>
+      <Box mx="auto">{initialized ? <AppTabs /> : <LoginButton />}</Box>
     </Container>
   );
 };

@@ -6,8 +6,8 @@ import { getFormattedDate } from "./utils";
 import TrackList from "./TrackList";
 import AlbumTypeIcon from "./AlbumTypeIcon";
 import Artists from "./Artists";
-import LoginButton from "./LoginButton";
 
+import Alert from "@material-ui/lab/Alert";
 import Box from "@material-ui/core/Box";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Dialog from "@material-ui/core/Dialog";
@@ -59,12 +59,14 @@ const AlbumModal = ({ albumId, children }) => {
 
   const loadAlbum = () => {
     getAlbumInfo(albumId)
-      .then((response) => setAlbum(response))
-      .catch(() =>
+      .then((response) => {
+        setAlbum(response);
+      })
+      .catch(() => {
         setErrorMessage(
           "An error occured when gathering information for the album."
-        )
-      );
+        );
+      });
   };
 
   const handleClickOpen = () => {
@@ -97,7 +99,7 @@ const AlbumModal = ({ albumId, children }) => {
           ) : (
             <Fragment>
               {errorMessage ? (
-                <LoginButton isError notice={errorMessage} />
+                <Alert severity="error">{errorMessage}</Alert>
               ) : (
                 <Box display="flex" flexDirection="column">
                   <Box className={classes.albumInfo}>

@@ -8,37 +8,42 @@ import {
 
 import AlbumCard, { AlbumCardSkeleton } from "./AlbumCard";
 import AlbumModal from "./AlbumModal";
-import LoginButton from "./LoginButton";
 
+import Alert from "@material-ui/lab/Alert";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 const GROUP_SIZE = 20;
 
-const AlbumGrid = () => {
+const AlbumGrid = ({ artists }) => {
   const [nextIndex, setNextIndex] = useState(GROUP_SIZE);
   const [albums, setAlbums] = useState([]);
   const [currentAlbums, setCurrentAlbums] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const showShowMoreButton = albums.length > 0 && nextIndex !== 0;
-  const loaded = albums.length > 0 || errorMessage;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getAlbumsFromFollowedArtists()
-      .then((response) => {
-        const responseAlbums = removeDuplicateAlbums({ albums: response });
-        const sortedAlbums = sortAlbumsByReleaseDate({
-          albums: responseAlbums,
+    if (artists.length > 0) {
+      setIsLoading(true);
+      getAlbumsFromFollowedArtists(artists)
+        .then((response) => {
+          const responseAlbums = removeDuplicateAlbums({ albums: response });
+          const sortedAlbums = sortAlbumsByReleaseDate({
+            albums: responseAlbums,
+          });
+          setAlbums(sortedAlbums);
+          setCurrentAlbums(sortedAlbums.slice(0, GROUP_SIZE));
+          setNextIndex(GROUP_SIZE);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setErrorMessage("An error occured when getting the albums.");
+          setIsLoading(false);
         });
-        setAlbums(sortedAlbums);
-        setCurrentAlbums(sortedAlbums.slice(0, GROUP_SIZE));
-        setNextIndex(GROUP_SIZE);
-      })
-      .catch(() =>
-        setErrorMessage("An error occured when getting the albums.")
-      );
-  }, []);
+    }
+  }, [artists]);
 
   const handleClickShowMore = () => {
     const nextIndexToSet = nextIndex + GROUP_SIZE;
@@ -48,7 +53,7 @@ const AlbumGrid = () => {
     setNextIndex(nextIndexToSet);
   };
 
-  return !loaded ? (
+  return isLoading ? (
     <Grid container spacing={3}>
       {[...Array(GROUP_SIZE)].map((_, index) => (
         <Grid item xs={6} sm={4} md={3} key={index.toString()}>
@@ -59,7 +64,7 @@ const AlbumGrid = () => {
   ) : (
     <Fragment>
       {errorMessage ? (
-        <LoginButton isError notice={errorMessage} />
+        <Alert severity="error">{errorMessage}</Alert>
       ) : (
         <Fragment>
           <Grid container spacing={3}>

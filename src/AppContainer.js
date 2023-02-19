@@ -78,6 +78,9 @@ const AppContainer = ({ children }) => (
         >
           Release Sonar
         </Link>
+        <Typography variant="subtitle1" gutterBottom>
+          See recently released singles and albums by the artists you follow.
+        </Typography>
       </Box>
       <Box justifyContent="center">{children}</Box>
       <footer>

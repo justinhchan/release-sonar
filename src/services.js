@@ -28,10 +28,17 @@ const getAllFollowedArtists = (artists, resolve, after) => {
     if (cursor) {
       getAllFollowedArtists(retrievedArtists, resolve, cursor);
     } else {
-      resolve(retrievedArtists.map((artist) => artist.id));
+      resolve(retrievedArtists);
     }
   });
 };
+
+export const getFollowedArtists = async () => {
+  const artists = await new Promise((resolve) => {
+    getAllFollowedArtists([], resolve);
+  });
+  return artists;
+}
 
 /**
  * Get an artist's most recent albums
@@ -54,11 +61,9 @@ const getUserCountryCode = () =>
 /**
  * Get the Albums from all of the user's followed artists
  */
-export const getAlbumsFromFollowedArtists = async () => {
+export const getAlbumsFromFollowedArtists = async (artists) => {
   const country = await getUserCountryCode();
-  const artistIds = await new Promise((resolve) => {
-    getAllFollowedArtists([], resolve);
-  });
+  const artistIds = artists.map((artist) => artist.id)
   let allAlbums = [];
   for (const artistId of artistIds) {
     const albumsFromArtist = await getArtistAlbums({
