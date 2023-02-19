@@ -7,6 +7,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import MuiAlert from "@material-ui/lab/Alert";
+import Link from "@material-ui/core/Link";
 
 const Follows = ({ artists }) => {
   if (!artists) {
@@ -22,14 +23,23 @@ const Follows = ({ artists }) => {
       ) : (
         <List>
           {artists.map((artist) => {
-            const { id, name, images } = artist;
+            const { id, name, images, external_urls } = artist;
             const imageUrl = images && images[0] && images[0].url;
+            const externalUrl = external_urls?.spotify;
             return (
               <ListItem key={id}>
                 <ListItemAvatar>
                   <Avatar alt={name} src={imageUrl} />
                 </ListItemAvatar>
-                <ListItemText primary={name} />
+                <Link
+                  href={externalUrl}
+                  color="inherit"
+                  variant="subtitle1"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <ListItemText primary={name} />
+                </Link>
               </ListItem>
             );
           })}
