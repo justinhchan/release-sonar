@@ -4,14 +4,20 @@ View recently released albums and singles by artists you follow on [Spotify](htt
 
 ## Screenshots
 
+### Login
+
+![Screenshot 2023-04-10 at 10 00 24 PM](https://user-images.githubusercontent.com/17633442/230998374-e32bf7e2-12b3-4ab8-a2ae-56a8f3a57c32.png)
+
 ### All followed artists
-<img width="85%" alt="follows" src="https://user-images.githubusercontent.com/17633442/219949937-5c8e2325-0a8e-45fc-a820-78d7c05ed0b0.png">
+![Screenshot 2023-04-10 at 10 00 59 PM](https://user-images.githubusercontent.com/17633442/230998403-6a85a396-aa97-44b8-8e7d-aa53b1022314.png)
+
 
 ### All releases
-<img width="85%" alt="releases" src="https://user-images.githubusercontent.com/17633442/219949942-262fbcbd-1f54-4d0c-bc46-fb46c7e3170a.png">
+![Screenshot 2023-04-10 at 10 01 19 PM](https://user-images.githubusercontent.com/17633442/230998420-18db4c4b-799e-4a64-9f9b-2b4c0f26b8ca.png)
+
 
 ### A release
-<img width="85%" alt="album" src="https://user-images.githubusercontent.com/17633442/219949945-33caca01-ee49-418a-b125-a0e3c53101e8.png">
+![Screenshot 2023-04-10 at 10 02 45 PM](https://user-images.githubusercontent.com/17633442/230998435-285abc73-c1eb-4a5b-b9dc-6b0f97abb56d.png)
 
 
 ## Development
